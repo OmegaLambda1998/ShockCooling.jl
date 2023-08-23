@@ -1,5 +1,5 @@
-name = "REPLACE_PKG"
-uuid = "a50c839e-1b84-4575-b48f-4fda80ec5e07"
+name = "ShockCooling"
+uuid = "c71b61e4-c631-4a95-b02e-ad61a3a6763b"
 authors = ["Patrick Armstrong <patrick.armstrong@anu.edu.au> and contributors"]
 version = "0.1.0"
 

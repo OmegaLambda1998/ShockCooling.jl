@@ -1,6 +1,6 @@
-using REPLACE_PKG
+using ShockCooling
 using Test
 
-@testset "REPLACE_PKG.jl" begin
+@testset "ShockCooling.jl" begin
     # Write your tests here.
 end

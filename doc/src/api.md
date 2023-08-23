@@ -5,30 +5,30 @@
 Pages = ["api.md"]
 Depth = 5
 ```
-## REPLACE_PKG Functions
+## ShockCooling Functions
 
 ```@meta
-CurrentModule = REPLACE_PKG
+CurrentModule = ShockCooling
 ```
 
 ### Public Objects
 
 ```@autodocs
-Modules = [REPLACE_PKG]
+Modules = [ShockCooling]
 Private = false
 ```
 
 ### Private Objects
 
 ```@autodocs
-Modules = [REPLACE_PKG]
+Modules = [ShockCooling]
 Public = false
 ```
 
-## REPLACE_PKG.RunModule Functions
+## ShockCooling.RunModule Functions
 
 ```@meta
-CurrentModule = REPLACE_PKG.RunModule
+CurrentModule = ShockCooling.RunModule
 ```
 
 ### Public Objects

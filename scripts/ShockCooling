@@ -15,6 +15,6 @@ export JULIA_PROJECT=$DIR/.. # $DIR is the scripts directory, so we go up a leve
 export JULIA_LOAD_PATH=@:@stdlib  # exclude default environment
 exec env LD_LIBRARY_PATH="" $JULIA_CMD -e 'include(popfirst!(ARGS))' "$SOURCE" "$@"
 =#
-include("../src/REPLACE_PKG.jl")
-using .REPLACE_PKG
+include("../src/ShockCooling.jl")
+using .ShockCooling
 main()

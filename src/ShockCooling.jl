@@ -1,4 +1,4 @@
-module REPLACE_PKG
+module ShockCooling
 
 # External packages
 using TOML
@@ -8,7 +8,7 @@ using StatProfilerHTML
 
 # Internal Packages
 include("RunModule.jl")
-using .RunModule: run_REPLACE_PKG
+using .RunModule: run_ShockCooling
 
 # Exports
 export main 
@@ -55,9 +55,9 @@ function main()
     toml_path = args["input"]
     toml = setup_input(toml_path, verbose)
     if args["profile"]
-        @profilehtml run_REPLACE_PKG(toml)
+        @profilehtml run_ShockCooling(toml)
     else
-        run_REPLACE_PKG(toml)
+        run_ShockCooling(toml)
     end
 end
 
