@@ -1,0 +1,45 @@
+[ global ]
+output_path = "../../Outputs/2017jgh"
+data_path = "../Data"
+logging = true
+
+<include 2017jgh_data.toml>
+
+[ data.modifications ]
+max_time = 58117.5 # Can specify either a value, min, or max. If min or max are specified, you canalso give a range of max_times, and it will find where the min / max flux within that range is. Can do the same with min_time
+max_time_unit = "d" # Defaults to d
+
+[[ model ]]
+name = "P15"
+constraints.R.unit = "Rsun"
+constraints.R.prior = "Normal"
+constraints.R.values = [25.0, 15.0]
+constraints.R.min = 0 # Truncates distribution. Defaults to -Inf.
+constraints.R.max = 500
+
+constraints.M.unit = "Msun"
+constraints.M.prior = "Normal"
+constraints.M.values = [1.0, 0.1]
+constraints.M.min = 0
+constraints.M.max = 10
+
+constraints.v.unit = "km / s"
+constraints.v.prior = "Normal"
+constraints.v.values = [3e4, 1e4]
+constraints.v.min = 1e4
+constraints.v.max = 5e4
+
+constraints.t.unit = "d"
+constraints.t.prior = "Normal"
+constraints.t.values = [-23, 3]
+constraints.t.min = -30
+constraints.t.max = -20
+
+[ fitting ]
+numwalkers = 1e1
+burnin = 1e2
+iterations = 1e3
+
+[ plot.comparison ] # compare the best fit to the data
+
+[ plot.contour ] # show a contour plot of the posterior

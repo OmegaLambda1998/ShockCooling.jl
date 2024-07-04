@@ -1,0 +1,49 @@
+[ global ]
+base_path = "../"
+output_path = "../Outputs/2016gkg" 
+logging = true
+
+[ data ]
+data_path = "2016gkg_data.toml" # Can be absolute, or relative to base_path
+max_time = 3 # Can specify either a value, min, or max. If min or max are specified, you canalso give a range of max_times, and it will find where the min / max flux within that range is. Can do the same with min_time
+
+[[ model ]]
+name = "P15"
+constraints.R.unit = "Rsun"
+constraints.R.prior = "Normal"
+constraints.R.values = [25.0, 15.0]
+constraints.R.min = 0 # Truncates distribution. Defaults to -Inf.
+constraints.R.max = 500
+
+constraints.M.unit = "Msun"
+constraints.M.prior = "Normal"
+constraints.M.values = [1.0, 0.1]
+constraints.M.min = 0
+constraints.M.max = 10
+
+constraints.v.unit = "km / s"
+constraints.v.prior = "Normal"
+constraints.v.values = [3e4, 1e4]
+constraints.v.min = 1e4
+constraints.v.max = 5e4
+
+constraints.t.unit = "d"
+constraints.t.prior = "Normal"
+constraints.t.values = [-23, 3]
+constraints.t.min = -30
+constraints.t.max = -20
+
+[ fitting ]
+numwalkers = 100
+thinning = 1
+burnin = 100
+numsamples_perwalker = 200
+bestfit = "median" # How to choose the best fitting value
+
+[ plot.prior ] # show the distribution of prior values
+
+[ plot.burnin ] # show how the walkers moved over the burn in phase
+
+[ plot.comparison ] # compare the best fit to the data
+
+[ plot.contour ] # show a contour plot of the posterior

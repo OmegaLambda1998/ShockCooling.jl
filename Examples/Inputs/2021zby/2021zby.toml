@@ -1,0 +1,141 @@
+[ global ]
+filter_path = "../Filters" # Defaults to base_path / Filters
+data_path = "../Data"
+output_path = "../../Outputs/2021zby" # Defaults to base_path / Output
+
+<include 2021zby_data.toml>
+
+[data.modifications]
+max_time = -17 # Can specify either a value, min, or max. If min or max are specified, you can also give a range of max_times, and it will find where the min / max flux within that range is. Can do the same with min_time
+min_time = -25
+max_time_unit = "d" # Defaults to d
+
+[[ model ]]
+name = "SW17_BSG"
+constraints.R.unit = "Rsun"
+constraints.R.prior = "Uniform"
+constraints.R.values = [0, 500] 
+constraints.R.min = 0 # Truncates distribution. Defaults to -Inf.
+
+constraints.M.unit = "Msun"
+constraints.M.prior = "Levy"
+constraints.M.values = [0, 500] 
+constraints.M.min = 0
+constraints.M.max = 10
+
+constraints.v.unit = "km / s"
+constraints.v.prior = "Normal"
+constraints.v.values = [12500, 800] 
+constraints.v.min = 0
+
+constraints.t.unit = "d"
+constraints.t.prior = "Normal"
+constraints.t.values = [-24, 0.1]
+constraints.t.min = -24.5
+constraints.t.max = -23.5
+
+#[[ model ]]
+#name = "SW17_RSG"
+#constraints.R.unit = "Rsun"
+#constraints.R.prior = "Uniform"
+#constraints.R.values = [0, 500] 
+#constraints.R.min = 0 # Truncates distribution. Defaults to -Inf.
+#
+#constraints.M.unit = "Msun"
+#constraints.M.prior = "Levy"
+#constraints.M.values = [0, 1] 
+#constraints.M.min = 0
+#constraints.M.max = 10
+#
+#constraints.v.unit = "km / s"
+#constraints.v.prior = "Normal"
+#constraints.v.values = [12500, 800] 
+#constraints.v.min = 0
+#
+#constraints.t.unit = "d"
+#constraints.t.prior = "Normal"
+#constraints.t.values = [-24, 0.1]
+#constraints.t.min = -24.5
+#constraints.t.max = -23.5
+#
+#[[ model ]]
+#name = "P15"
+#constraints.R.unit = "Rsun"
+#constraints.R.prior = "Uniform"
+#constraints.R.values = [0, 500] 
+#constraints.R.min = 0 # Truncates distribution. Defaults to -Inf.
+#
+#constraints.M.unit = "Msun"
+#constraints.M.prior = "Levy"
+#constraints.M.values = [0, 1] 
+#constraints.M.min = 0
+#constraints.M.max = 10
+#
+#constraints.v.unit = "km / s"
+#constraints.v.prior = "Normal"
+#constraints.v.values = [12500, 800] 
+#constraints.v.min = 0
+#
+#constraints.t.unit = "d"
+#constraints.t.prior = "Normal"
+#constraints.t.values = [-24, 0.1]
+#constraints.t.min = -24.5
+#constraints.t.max = -23.5
+#
+#[[ model ]]
+#name = "P20"
+#constraints.R.unit = "Rsun"
+#constraints.R.prior = "Uniform"
+#constraints.R.values = [0, 500] 
+#constraints.R.min = 0 # Truncates distribution. Defaults to -Inf.
+#
+#constraints.M.unit = "Msun"
+#constraints.M.prior = "Levy"
+#constraints.M.values = [0, 1] 
+#constraints.M.min = 0
+#constraints.M.max = 10
+#
+#constraints.v.unit = "km / s"
+#constraints.v.prior = "Normal"
+#constraints.v.values = [12500, 800] 
+#constraints.v.min = 0
+#
+#constraints.t.unit = "d"
+#constraints.t.prior = "Normal"
+#constraints.t.values = [-24, 0.1]
+#constraints.t.min = -24.5
+#constraints.t.max = -23.5
+
+
+[ fitting ]
+#chain.P15 = "../../Outputs/2021zby/chain_Piro (2015).jld2"
+#chain.P20 = "../../Outputs/2021zby/chain_Piro (2020).jld2"
+#chain.SW17_BSG = "../../Outputs/2021zby/chain_Sapir & Waxman (2017) BSG.jld2"
+#chain.SW17_RSG = "../../Outputs/2021zby/chain_Sapir & Waxman (2017) RSG.jld2"
+numwalkers = 1e3
+burnin = 1e4
+iterations = 1e5
+
+[ plot.comparison ] # compare the best fit to the data
+join = true
+filters = ["Red", "orange"]
+markersize = 21
+marker."tess 6hr" = "utriangle"
+marker.atlas = "circle"
+colour.Red = "red"
+colour.orange = "orange"
+rename.Red = "Tess 6hr"
+legend = true
+
+[ plot.contour ]
+join = true
+scale.v = 10000
+
+[ plot.temperature ]
+join = false
+
+[ plot.radius ]
+join = false
+
+[ plot.luminosity ]
+join = false

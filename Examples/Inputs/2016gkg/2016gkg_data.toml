@@ -1,0 +1,31 @@
+[ global ]
+base_path = "../" # Optional, defaults to the directory containing this input file. Can be relative (to this input file's directory) or absolute. All relative paths will be assumed to be relative to base_path
+filter_path = "Filters" # Defaults to base_path / Filters
+output_path = "../Output" # Defaults to base_path / Output
+
+# Data
+[ data ]
+# First include information about the supernova
+name = "2016gkg" # Required
+peak_time = true # Default false. Can either be true, in which case all times will become relative to the peak data point. Alternatively, give a value, and all times will be relative to that value
+zeropoint = 23.00
+zeropoint_unit = "AB_mag" # Optional, default to AB_mag
+redshift = 0.0049
+
+[[ data.observations ]] # Now load in different observations of the supernova. This can either be one file with all observations, or you can load in multiple files
+name = "2016gkg"
+path = "2016gkg/2016gkg.csv"
+delimiter = ","
+header.upperlimit.col = "upperlimit"
+header.time.col = "time"
+header.time.unit = "d"
+
+header.magnitude.col = "magnitude"
+header.magnitude.unit = "AB_mag"
+
+header.magnitude_err.col = "e_magnitude"
+header.magnitude_err.unit = "AB_mag"
+
+header.filter.col = "band"
+header.instrument.col = "instrument"
+header.facility.col = "telescope"

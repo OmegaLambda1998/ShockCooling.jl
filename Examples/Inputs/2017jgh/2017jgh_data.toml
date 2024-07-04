@@ -1,0 +1,32 @@
+# Data
+[ data ]
+# First include information about the supernova
+name = "2017jgh" # Required
+zeropoint = 25.3 
+redshift = 0.079
+#max_flux_err = 2.5e2 # Optional, set's the maximum allowed value for the uncertainty in the flux
+#max_flux_err_unit = "µJy" # Optional, default to µJy
+peak_time = 58127.0 # Default false. Can either be true, in which case all times will become relative to the peak data point. Alternatively, give a value, and all times will be relative to that value
+peak_time_unit = "d"
+
+[[ data.observations ]] # Now load in different observations of the supernova. This can either be one file with all observations, or you can load in multiple files
+name = "kepler" # Required, Human readable name to distinguish observations
+path = "2017jgh/2017jghCleaned2.csv" # Required, Accepts either relative (to Supernova) or absolute path
+delimiter = "," # Optional, defaults to comma
+header.time.col = "time"
+header.time.unit = "d"
+
+header.flux.col = "flux"
+header.flux.unit = "erg / s / cm^2 / Hz"
+
+header.flux_err.col = "e_flux"
+header.flux_err.unit = "erg / s / cm^2 / Hz"
+
+header.upperlimit.col = "upperlimit"
+upperlimit_false = ["False"]
+header.facility.col = "facility"
+header.instrument.col = "instrument"
+header.passband.col = "band"
+
+[[ plot.lightcurve ]]
+legend = true

@@ -1,0 +1,43 @@
+# Data
+[ data ]
+# First include information about the supernova
+name = "2021zby" # Required
+zeropoint = 8.9
+redshift = 0.02559
+max_flux_err = 2.5e2 # Optional, set's the maximum allowed value for the uncertainty in the flux
+max_flux_err_unit = "µJy" # Optional, default to µJy
+peak_time = true # Default false. Can either be true, in which case all times will become relative to the peak data point. Alternatively, give a value, and all times will be relative to that value
+
+[[ data.observations ]] # Now load in different observations of the supernova. This can either be one file with all observations, or you can load in multiple files
+name = "atlas" # Required, Human readable name to distinguish observations
+path = "2021zby/atlas_1007.dat" # Required, Accepts either relative (to Supernova) or absolute path
+delimiter = " " # Optional, defaults to comma
+facility = "Misc"
+instrument = "Atlas" # Optional, will overwrite anything in the file 
+upperlimit = "flux_err"
+
+# Since this file contains a header that isn't in the expected format, you can optionally specify what each header corresponds to.
+# If you do this you MUST specify the time, flux, and flux error.
+# You can also specify the filter, instrument, or upperlimit columns if they're in the file. If not, specify them above
+header.time.col = "MJD"
+header.time.unit = "d"
+
+header.flux.col = "uJy"
+header.flux.unit = "µJy"
+
+header.flux_err.col = "duJy"
+header.flux_err.unit = "µJy"
+
+header.passband.col = "F"
+
+[[ data.observations ]]
+name = "tess 6hr"
+path = "2021zby/tess_2_6hrlc.txt"
+delimiter = " "
+comment = "#" # Optional, defines what is a comment (will be removed). Defaults to #
+facility = "tess"
+instrument = "tess"
+passband = "Red"
+filter_name = "Tess"
+upperlimit = false
+flux_offset = 296 # Defaults to 0, assumes same units as flux
