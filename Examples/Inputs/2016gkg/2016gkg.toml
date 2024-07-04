@@ -1,11 +1,9 @@
 [ global ]
-base_path = "../"
-output_path = "../Outputs/2016gkg" 
-logging = true
+filter_path = "../Filters" # Defaults to base_path / Filters
+data_path = "../Data/2016gkg"
+output_path = "../../Outputs/2016gkg" # Defaults to base_path / Output
 
-[ data ]
-data_path = "2016gkg_data.toml" # Can be absolute, or relative to base_path
-max_time = 3 # Can specify either a value, min, or max. If min or max are specified, you canalso give a range of max_times, and it will find where the min / max flux within that range is. Can do the same with min_time
+<include 2016gkg_data.toml>
 
 [[ model ]]
 name = "P15"

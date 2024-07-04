@@ -1,6 +1,6 @@
 [ global ]
 filter_path = "../Filters" # Defaults to base_path / Filters
-data_path = "../Data"
+data_path = "../Data/2021zby"
 output_path = "../../Outputs/2021zby" # Defaults to base_path / Output
 
 <include 2021zby_data.toml>

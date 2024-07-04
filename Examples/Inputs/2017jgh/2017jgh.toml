@@ -1,7 +1,7 @@
 [ global ]
-output_path = "../../Outputs/2017jgh"
-data_path = "../Data"
-logging = true
+filter_path = "../Filters" # Defaults to base_path / Filters
+data_path = "../Data/2017jgh"
+output_path = "../../Outputs/2017jgh" # Defaults to base_path / Output
 
 <include 2017jgh_data.toml>
 

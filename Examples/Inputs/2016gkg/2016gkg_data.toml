@@ -1,8 +1,3 @@
-[ global ]
-base_path = "../" # Optional, defaults to the directory containing this input file. Can be relative (to this input file's directory) or absolute. All relative paths will be assumed to be relative to base_path
-filter_path = "Filters" # Defaults to base_path / Filters
-output_path = "../Output" # Defaults to base_path / Output
-
 # Data
 [ data ]
 # First include information about the supernova
@@ -14,7 +9,7 @@ redshift = 0.0049
 
 [[ data.observations ]] # Now load in different observations of the supernova. This can either be one file with all observations, or you can load in multiple files
 name = "2016gkg"
-path = "2016gkg/2016gkg.csv"
+path = "2016gkg.csv"
 delimiter = ","
 header.upperlimit.col = "upperlimit"
 header.time.col = "time"

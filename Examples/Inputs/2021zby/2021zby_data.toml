@@ -10,7 +10,7 @@ peak_time = true # Default false. Can either be true, in which case all times wi
 
 [[ data.observations ]] # Now load in different observations of the supernova. This can either be one file with all observations, or you can load in multiple files
 name = "atlas" # Required, Human readable name to distinguish observations
-path = "2021zby/atlas_1007.dat" # Required, Accepts either relative (to Supernova) or absolute path
+path = "atlas_1007.dat" # Required, Accepts either relative (to Supernova) or absolute path
 delimiter = " " # Optional, defaults to comma
 facility = "Misc"
 instrument = "Atlas" # Optional, will overwrite anything in the file 
@@ -32,7 +32,7 @@ header.passband.col = "F"
 
 [[ data.observations ]]
 name = "tess 6hr"
-path = "2021zby/tess_2_6hrlc.txt"
+path = "tess_2_6hrlc.txt"
 delimiter = " "
 comment = "#" # Optional, defines what is a comment (will be removed). Defaults to #
 facility = "tess"

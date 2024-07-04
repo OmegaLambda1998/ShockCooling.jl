@@ -11,7 +11,7 @@ peak_time_unit = "d"
 
 [[ data.observations ]] # Now load in different observations of the supernova. This can either be one file with all observations, or you can load in multiple files
 name = "kepler" # Required, Human readable name to distinguish observations
-path = "2017jgh/2017jghCleaned2.csv" # Required, Accepts either relative (to Supernova) or absolute path
+path = "2017jghCleaned2.csv" # Required, Accepts either relative (to Supernova) or absolute path
 delimiter = "," # Optional, defaults to comma
 header.time.col = "time"
 header.time.unit = "d"
