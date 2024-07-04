@@ -40,7 +40,7 @@ end
     Include all [`Model`](model) files in models directory
 """
 const model_path = joinpath(@__DIR__, "models")
-for path in readdir(model_path; join=true)
+for path in readdir(model_path; join = true)
     if isfile(path)
         include(path)
     end
@@ -62,7 +62,7 @@ function get_constraints(constraints_dict::Dict{String,Any})
     constraints = Dict{String,Tuple{Distribution,Unitful.FreeUnits}}()
     for param in keys(constraints_dict)
         param_dict = constraints_dict[param]
-        param_unit = uparse(param_dict["UNIT"], unit_context=UNITS)
+        param_unit = uparse(param_dict["UNIT"], unit_context = UNITS)
         param_prior = getfield(Distributions, Symbol(param_dict["PRIOR"]))
         param_values = param_dict["VALUES"]
         param_min = get(param_dict, "MIN", -Inf)

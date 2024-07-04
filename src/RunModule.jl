@@ -20,22 +20,26 @@ function modify_supernova!(supernova::Supernova, modifications::Dict{String,Any}
 
     # Unpack modifications
     min_time = get(modifications, "MIN_TIME", -Inf)
-    min_time_unit = uparse(get(modifications, "MIN_TIME_UNIT", "d"), unit_context=UNITS)
+    min_time_unit = uparse(get(modifications, "MIN_TIME_UNIT", "d"), unit_context = UNITS)
     min_time_range = get(modifications, "MIN_TIME_RANGE", [-Inf, Inf]) .* min_time_unit
 
     max_time = get(modifications, "MAX_TIME", Inf)
-    max_time_unit = uparse(get(modifications, "MAX_TIME_UNIT", "d"), unit_context=UNITS)
+    max_time_unit = uparse(get(modifications, "MAX_TIME_UNIT", "d"), unit_context = UNITS)
     max_time_range = get(modifications, "MAX_TIME_RANGE", [-Inf, Inf]) .* max_time_unit
 
     # Get Min Time
     @debug "Min time option = $min_time"
     if min_time in ["min", "max"]
-        observations = [obs for obs in supernova.lightcurve.observations if ((obs.time > min_time_range[1]) & (obs.time < min_time_range[2]))]
+        observations = [
+            obs for obs in supernova.lightcurve.observations if
+            ((obs.time > min_time_range[1]) & (obs.time < min_time_range[2]))
+        ]
         best_obs = observations[1]
         for obs in observations
             # If min_time is min, get the observations with the minimum flux within the min_time_range
             # If min_time is max, get the observations with the maximum flux within the min_time_range
-            if ((min_time == "min") & (obs.flux < best_obs.flux)) | ((min_time == "max") & (obs.flux > best_obs.flux))
+            if ((min_time == "min") & (obs.flux < best_obs.flux)) |
+               ((min_time == "max") & (obs.flux > best_obs.flux))
                 best_obs = obs
             end
         end
@@ -48,12 +52,16 @@ function modify_supernova!(supernova::Supernova, modifications::Dict{String,Any}
     # Get Max Time
     @debug "Max time option = $max_time"
     if max_time in ["min", "max"]
-        observations = [obs for obs in supernova.lightcurve.observations if ((obs.time > max_time_range[1]) & (obs.time < max_time_range[2]))]
+        observations = [
+            obs for obs in supernova.lightcurve.observations if
+            ((obs.time > max_time_range[1]) & (obs.time < max_time_range[2]))
+        ]
         best_obs = observations[1]
         for obs in observations
             # If max_time is min, get the observations with the minimum flux within the max_time_range
             # If max_time is max, get the observations with the maximum flux within the max_time_range
-            if ((max_time == "min") & (obs.flux < best_obs.flux)) | ((max_time == "max") & (obs.flux > best_obs.flux))
+            if ((max_time == "min") & (obs.flux < best_obs.flux)) |
+               ((max_time == "max") & (obs.flux > best_obs.flux))
                 best_obs = obs
             end
         end
@@ -64,7 +72,10 @@ function modify_supernova!(supernova::Supernova, modifications::Dict{String,Any}
     @debug "Max time set to $max_time"
 
     # Apply modifications
-    observations = [obs for obs in supernova.lightcurve.observations if ((obs.time > min_time) & (obs.time < max_time))]
+    observations = [
+        obs for obs in supernova.lightcurve.observations if
+        ((obs.time > min_time) & (obs.time < max_time))
+    ]
     supernova.lightcurve.observations = observations
     @debug "After modification there are $(length(supernova.lightcurve.observations)) observations"
 end
@@ -109,7 +120,8 @@ function run_ShockCooling(toml::Dict{String,Any})
     # Load chain
     if "CHAIN" in keys(fitting_opts)
         for model_name in keys(fitting_opts["CHAIN"])
-            chain_path = abspath(joinpath(config["BASE_PATH"], fitting_opts["CHAIN"][model_name]))
+            chain_path =
+                abspath(joinpath(config["BASE_PATH"], fitting_opts["CHAIN"][model_name]))
             @info "Loading chain from $chain_path"
             chain, logdensity = load_chain(chain_path)
             chains[model_name] = chain
@@ -118,8 +130,13 @@ function run_ShockCooling(toml::Dict{String,Any})
     else
         for (class, model) in models
             @info "Fitting $(model.name)"
-            prior, chain, accept_ratio, logdensity, blob = run_mcmc(fitting_opts, model, supernova)
-            save_chain(joinpath(config["OUTPUT_PATH"], "chain_$(model.name).jld2"), chain, logdensity)
+            prior, chain, accept_ratio, logdensity, blob =
+                run_mcmc(fitting_opts, model, supernova)
+            save_chain(
+                joinpath(config["OUTPUT_PATH"], "chain_$(model.name).jld2"),
+                chain,
+                logdensity,
+            )
             priors[class] = prior
             chains[class] = chain
             accept_ratios[class] = accept_ratio
@@ -139,8 +156,8 @@ function run_ShockCooling(toml::Dict{String,Any})
         param = Dict()
         bestfit_params = []
         for (i, k) in enumerate(sort!(collect(keys(model.parameter_names))))
-            min_like = isnan(bestfit[i][3]) ? NaN : round(bestfit[i][3], digits=3) 
-            max_like = isnan(bestfit[i][1]) ? NaN : round(bestfit[i][1], digits=3) 
+            min_like = isnan(bestfit[i][3]) ? NaN : round(bestfit[i][3], digits = 3)
+            max_like = isnan(bestfit[i][1]) ? NaN : round(bestfit[i][1], digits = 3)
             @info "Marginalised maximum likelihood $(model.parameter_names[k]) = $(round(bestfit[i][2], digits=3))+$max_like/-$min_like $(model.constraints[uppercase(k)][2])"
             @info "Maximum likelihood $(model.parameter_names[k]) = $(round(bestfit[i][4], digits=3)) $(model.constraints[uppercase(k)][2])"
             param[k] = bestfit[i][4] * model.constraints[uppercase(k)][2]
