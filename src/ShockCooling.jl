@@ -49,8 +49,11 @@ function main()
 end
 
 function main(toml_path::AbstractString, verbose::Bool, profile::Bool)
-    paths = OrderedDict("data_path" => ("base_path", "Data"), "filter_path" => ("base_path", "Filter"))
-    toml = setup_input(toml_path, verbose; paths=paths)
+    paths = OrderedDict(
+        "data_path" => ("base_path", "Data"),
+        "filter_path" => ("base_path", "Filter"),
+    )
+    toml = setup_input(toml_path, verbose; paths = paths)
     if profile
         @warn "Running everything once to precompile before profiling"
         run_ShockCooling(toml)

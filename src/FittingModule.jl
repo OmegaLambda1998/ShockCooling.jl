@@ -32,7 +32,7 @@ Generate a set of initial parameters for the MCMC walkers. The parameters are dr
 """
 function get_prior(model::Model, numwalkers::Int64)
     ks = sort!(collect(keys(model.constraints)))
-    x0 = [[rand(model.constraints[k][1]) for k in ks] for _ in 1:numwalkers]
+    x0 = [[rand(model.constraints[k][1]) for k in ks] for _ = 1:numwalkers]
     return x0
 end
 
@@ -46,7 +46,9 @@ Calculate the prior probability of a set of parameters. This is the sum of the l
 - `param::Dict`: The parameters to generate the prior probability
 """
 function prior_constraint(model::Model, param::Dict)
-    return sum([logpdf(model.constraints[k][1], ustrip(param[k])) for k in keys(model.constraints)])
+    return sum([
+        logpdf(model.constraints[k][1], ustrip(param[k])) for k in keys(model.constraints)
+    ])
 end
 
 """
@@ -108,19 +110,31 @@ function run_mcmc(config::Dict{String,Any}, model::Model, supernova::Supernova)
     x0 = get_prior(model, numwalkers)
 
     @info "Running MCMC"
-    chain, accept_ratio, logdensities, blob = emcee(llhood, x0; niter=iterations, nburnin=burnin, nthin=thinning, use_progress_meter=use_progress_meter)
+    chain, accept_ratio, logdensities, blob = emcee(
+        llhood,
+        x0;
+        niter = iterations,
+        nburnin = burnin,
+        nthin = thinning,
+        use_progress_meter = use_progress_meter,
+    )
     @info "MCMC Finished"
 
-    chain, accept_ratio, logdensities, blob = squash_walkers(chain, accept_ratio, logdensities, blob)
+    chain, accept_ratio, logdensities, blob =
+        squash_walkers(chain, accept_ratio, logdensities, blob)
     @info "MCMC has accept ratio of $accept_ratio"
 
     return x0, chain, accept_ratio, logdensities, blob
 end
 
 
-function get_smoothed_histogram(chain::Vector{Float64}, logdens::Vector{Float64}, target::Float64=0.6827)
-    h = fit(StatsBase.Histogram, chain; nbins=floor(Int64, sqrt(length(chain)) / 10))
-    h = normalize(h, mode=:pdf)
+function get_smoothed_histogram(
+    chain::Vector{Float64},
+    logdens::Vector{Float64},
+    target::Float64 = 0.6827,
+)
+    h = fit(StatsBase.Histogram, chain; nbins = floor(Int64, sqrt(length(chain)) / 10))
+    h = normalize(h, mode = :pdf)
     edges = collect(h.edges[1])
     hist = h.weights
     edge_centers = @. 0.5 * (edges[2:end] + edges[1:end-1])
@@ -131,7 +145,12 @@ function get_smoothed_histogram(chain::Vector{Float64}, logdens::Vector{Float64}
     return xs, ys, cs
 end
 
-function get_bestfit(chain::Vector{Float64}, logdens::Vector{Float64}, i::Int64, target::Float64=0.6827)
+function get_bestfit(
+    chain::Vector{Float64},
+    logdens::Vector{Float64},
+    i::Int64,
+    target::Float64 = 0.6827,
+)
     xs, ys, cs = get_smoothed_histogram(chain, logdens)
     n_pad = 1000
     x_start = xs[1] * ones(n_pad, 1)
@@ -163,9 +182,9 @@ function get_bestfit(chain::Vector{Float64}, logdens::Vector{Float64}, i::Int64,
             if count > 50
                 throw(ErrorException("Failed to converge"))
             end
-            li1 = [i for i in 1:length(l1) if l1[i] < mid]
+            li1 = [i for i = 1:length(l1) if l1[i] < mid]
             i1 = startIndex - li1[1]
-            li2 = [i for i in 1:length(l2) if l2[i] < mid]
+            li2 = [i for i = 1:length(l2) if l2[i] < mid]
             i2 = startIndex + li2[1]
             area = cs[i2] - cs[i1]
             deviation = abs(area - target)
@@ -191,11 +210,12 @@ end
 function get_bestfit(chain::Vector{Vector{Float64}}, logdensity::Vector{Float64})
     maxind = argmax(logdensity)
     if length(chain) > length(chain[1])
-        bestfit = [get_bestfit([c[i] for c in chain], logdensity, i) for i in 1:length(chain[1])]
+        bestfit =
+            [get_bestfit([c[i] for c in chain], logdensity, i) for i = 1:length(chain[1])]
     else
-        bestfit = [get_bestfit(chain[i], logdensity, i) for i in 1:length(chain)]
+        bestfit = [get_bestfit(chain[i], logdensity, i) for i = 1:length(chain)]
     end
-    for i in 1:length(bestfit)
+    for i = 1:length(bestfit)
         if length(chain) > length(chain[1])
             push!(bestfit[i], chain[maxind][i])
         else
@@ -204,7 +224,7 @@ function get_bestfit(chain::Vector{Vector{Float64}}, logdensity::Vector{Float64}
         bestfit[i][1] = bestfit[i][2] - bestfit[i][1]
         bestfit[i][3] = bestfit[i][3] - bestfit[i][2]
     end
-    return bestfit 
+    return bestfit
 end
 
 

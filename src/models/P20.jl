@@ -10,8 +10,17 @@ mutable struct P20 <: Model
 end
 
 # Default parameter names
-function P20(name::String, class::String, constraints::Dict{String,Tuple{Distribution,Unitful.FreeUnits}})
-    parameter_names = Dict{String,LaTeXString}("R" => L"R_{e}~[R_{\odot}]", "M" => L"M_{e}~[M_{\odot}]", "v" => L"v_{t}~[\frac{km}{s}]", "t" => L"t_{off}~[Days]")
+function P20(
+    name::String,
+    class::String,
+    constraints::Dict{String,Tuple{Distribution,Unitful.FreeUnits}},
+)
+    parameter_names = Dict{String,LaTeXString}(
+        "R" => L"R_{e}~[R_{\odot}]",
+        "M" => L"M_{e}~[M_{\odot}]",
+        "v" => L"v_{t}~[\frac{km}{s}]",
+        "t" => L"t_{off}~[Days]",
+    )
     return P20(name, class, parameter_names, constraints)
 end
 
@@ -90,10 +99,12 @@ function model_flux(model::P20, param::Dict, observation::Observation)
 end
 
 function run_model(model::P20, param::Dict, supernova::Supernova)
-    m_flux = [model_flux(model, param, obs) for obs in supernova.lightcurve.observations] .|> u"erg / s / cm^2 / Hz"
+    m_flux =
+        [model_flux(model, param, obs) for obs in supernova.lightcurve.observations] .|> u"erg / s / cm^2 / Hz"
     dist = 10u"pc"
     R = [radius(model, param, obs) for obs in supernova.lightcurve.observations]
-    abs_mag = @. -48.6 - 2.5 * (log10(ustrip(m_flux)) + log10(uconvert(NoUnits, R / dist)^2))
+    abs_mag =
+        @. -48.6 - 2.5 * (log10(ustrip(m_flux)) + log10(uconvert(NoUnits, R / dist)^2))
     replace!(abs_mag, NaN => -10)
     return abs_mag * u"AB_mag"
 end

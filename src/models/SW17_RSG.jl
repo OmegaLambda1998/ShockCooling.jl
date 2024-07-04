@@ -9,8 +9,17 @@ mutable struct SW17_RSG <: Model
 end
 
 # Default parameter names
-function SW17_RSG(name::String, class::String, constraints::Dict{String,Tuple{Distribution,Unitful.FreeUnits}})
-    parameter_names = Dict{String,LaTeXString}("R" => L"R_{e}~[R_{\odot}]", "M" => L"M_{e}~[M_{\odot}]", "v" => L"v_{s}~[\frac{km}{s}]", "t" => L"t_{off}~[Days]")
+function SW17_RSG(
+    name::String,
+    class::String,
+    constraints::Dict{String,Tuple{Distribution,Unitful.FreeUnits}},
+)
+    parameter_names = Dict{String,LaTeXString}(
+        "R" => L"R_{e}~[R_{\odot}]",
+        "M" => L"M_{e}~[M_{\odot}]",
+        "v" => L"v_{s}~[\frac{km}{s}]",
+        "t" => L"t_{off}~[Days]",
+    )
     return SW17_RSG(name, class, parameter_names, constraints)
 end
 
@@ -104,7 +113,10 @@ function temperature(::SW17_RSG, param::Dict, observation::Observation)
     fp = (m / mc)^0.5
     ϵ1 = 0.027
 
-    T = Tu * ((vs * vs * td * td / (fp * (menv / 1u"Msun") * k))^ϵ1) * ((R13 / (td * td * k))^0.25)
+    T =
+        Tu *
+        ((vs * vs * td * td / (fp * (menv / 1u"Msun") * k))^ϵ1) *
+        ((R13 / (td * td * k))^0.25)
     return T
 end
 
@@ -114,10 +126,12 @@ function model_flux(model::SW17_RSG, param::Dict, observation::Observation)
 end
 
 function run_model(model::SW17_RSG, param::Dict, supernova::Supernova)
-    m_flux = [model_flux(model, param, obs) for obs in supernova.lightcurve.observations] .|> u"erg / s / cm^2 / Hz"
+    m_flux =
+        [model_flux(model, param, obs) for obs in supernova.lightcurve.observations] .|> u"erg / s / cm^2 / Hz"
     dist = 10u"pc"
     R = [radius(model, param, obs) for obs in supernova.lightcurve.observations]
-    abs_mag = @. -48.6 - 2.5 * (log10(ustrip(m_flux)) + log10(uconvert(NoUnits, R / dist)^2))
+    abs_mag =
+        @. -48.6 - 2.5 * (log10(ustrip(m_flux)) + log10(uconvert(NoUnits, R / dist)^2))
     replace!(abs_mag, NaN => -10)
     return abs_mag * u"AB_mag"
 end
