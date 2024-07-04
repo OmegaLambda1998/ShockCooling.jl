@@ -35,11 +35,8 @@ jobs:
         # '1' is the latest stable version
         # 'nightly' is the latest nightly release
         julia-version: ['1.6', '1', 'nightly']
-        julia-arch: [x64, x86]
+        julia-arch: ['x64']
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        exclude:
-          - os: macOS-latest
-            julia-arch: x86
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@latest
