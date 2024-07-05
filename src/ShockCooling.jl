@@ -4,7 +4,6 @@ module ShockCooling
 using TOML
 using BetterInputFiles
 using ArgParse
-using StatProfilerHTML
 using OrderedCollections
 
 # Internal Packages
