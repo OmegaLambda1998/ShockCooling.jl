@@ -67,11 +67,7 @@ function get_constraints(constraints_dict::Dict{String,Any})
         param_values = param_dict["VALUES"]
         param_min = get(param_dict, "MIN", -Inf)
         param_max = get(param_dict, "MAX", Inf)
-        if param_prior == Normal
-            prior = TruncatedNormal(param_values..., param_min, param_max)
-        else
-            prior = Truncated(param_prior(param_values...), param_min, param_max)
-        end
+        prior = Truncated(param_prior(param_values...), param_min, param_max)
         constraints[param] = (prior, param_unit)
     end
     return constraints
