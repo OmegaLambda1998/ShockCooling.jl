@@ -25,9 +25,6 @@ function get_args()
         "--verbose", "-v"
         help = "Increase level of logging verbosity"
         action = :store_true
-        "--profile", "-p"
-        help = "Run profiler"
-        action = :store_true
         "input"
         help = "Path to .toml file"
         required = true
@@ -44,24 +41,16 @@ function main()
     args = get_args()
     toml_path = args["input"]
     verbose = args["verbose"]
-    profile = args["profile"]
-    main(toml_path, verbose, profile)
+    main(toml_path, verbose)
 end
 
-function main(toml_path::AbstractString, verbose::Bool, profile::Bool)
+function main(toml_path::AbstractString, verbose::Bool)
     paths = OrderedDict(
         "data_path" => ("base_path", "Data"),
         "filter_path" => ("base_path", "Filter"),
     )
     toml = setup_input(toml_path, verbose; paths = paths)
-    if profile
-        @warn "Running everything once to precompile before profiling"
-        run_ShockCooling(toml)
-        @profilehtml run_ShockCooling(toml)
-    else
-        run_ShockCooling(toml)
-    end
-
+    run_ShockCooling(toml)
 end
 
 if abspath(PROGRAM_FILE) == @__FILE__
